@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОТП NEXT — Маркетплейс</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--lime:#C8E60E;--orange:#FF6B00;--purple:rgb(150,73,189);--bg:#FAFAFA;--dark:#1a1a1e;--text:#1d1d1f;--text2:#6e6e73;--text3:#aeaeb2;--border:rgba(0,0,0,.06);--card-bg:#2a2a2e;--card-text:#f5f5f7;--card-text2:rgba(245,245,247,.6);--card-text3:rgba(245,245,247,.35);--card-border:rgba(255,255,255,.08)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Manrope',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:rgba(200,230,14,.25)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:3px}
+.cs::-webkit-scrollbar{width:4px}.cs::-webkit-scrollbar-thumb{background:rgba(0,0,0,.08);border-radius:2px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes pulseGlow{0%,100%{opacity:.3}50%{opacity:.6}}
+@keyframes moveBox{0%{offset-distance:0%}100%{offset-distance:100%}}
+@keyframes rotateBorder{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes pharmaFlicker{
+/* === PHASE 1: quick nervous flickers (0–25%) === */
+0%,10%{opacity:1;text-shadow:0 0 12px #C8E60E,0 0 24px rgba(200,230,14,.4)}
+11%{opacity:.6;text-shadow:0 0 4px rgba(200,230,14,.15)}
+12%{opacity:1;text-shadow:0 0 14px #C8E60E,0 0 28px rgba(200,230,14,.5)}
+13%{opacity:.25;text-shadow:none}
+14.5%{opacity:.9;text-shadow:0 0 10px rgba(200,230,14,.35)}
+15%{opacity:1;text-shadow:0 0 12px #C8E60E,0 0 24px rgba(200,230,14,.4)}
+19%{opacity:1;text-shadow:0 0 12px #C8E60E,0 0 24px rgba(200,230,14,.4)}
+20%{opacity:.45;text-shadow:0 0 3px rgba(200,230,14,.1)}
+20.5%{opacity:.8;text-shadow:0 0 8px rgba(200,230,14,.25)}
+21%{opacity:.15;text-shadow:none}
+22%{opacity:1;text-shadow:0 0 12px #C8E60E,0 0 30px rgba(200,230,14,.5)}
+25%{opacity:1;text-shadow:0 0 12px #C8E60E,0 0 24px rgba(200,230,14,.4)}
+
+/* === PHASE 2: blink, die out, reignite (25–48%) === */
+27%{opacity:.7;text-shadow:0 0 6px rgba(200,230,14,.2)}
+28%{opacity:.3;text-shadow:0 0 2px rgba(200,230,14,.05)}
+29%{opacity:.5;text-shadow:0 0 4px rgba(200,230,14,.1)}
+30%{opacity:.08;text-shadow:none}
+33%{opacity:.04;text-shadow:none}
+34%{opacity:.15;text-shadow:0 0 2px rgba(200,230,14,.03)}
+34.5%{opacity:.03;text-shadow:none}
+37%{opacity:0;text-shadow:none}
+40%{opacity:0;text-shadow:none}
+41%{opacity:.12;text-shadow:0 0 3px rgba(200,230,14,.05)}
+41.5%{opacity:0;text-shadow:none}
+43%{opacity:.3;text-shadow:0 0 4px rgba(200,230,14,.08)}
+43.5%{opacity:.08;text-shadow:none}
+45%{opacity:.55;text-shadow:0 0 6px rgba(200,230,14,.15)}
+46%{opacity:.85;text-shadow:0 0 10px rgba(200,230,14,.3)}
+48%{opacity:1;text-shadow:0 0 16px #C8E60E,0 0 36px rgba(200,230,14,.55)}
+
+/* === PHASE 3: stable glow (48–78%) === */
+50%{opacity:1;text-shadow:0 0 12px #C8E60E,0 0 24px rgba(200,230,14,.4)}
+78%{opacity:1;text-shadow:0 0 12px #C8E60E,0 0 24px rgba(200,230,14,.4)}
+
+/* === PHASE 4: dying again, loop back (78–100%) === */
+80%{opacity:.7;text-shadow:0 0 7px rgba(200,230,14,.2)}
+81%{opacity:.9;text-shadow:0 0 10px rgba(200,230,14,.3)}
+83%{opacity:.4;text-shadow:0 0 3px rgba(200,230,14,.08)}
+84%{opacity:.75;text-shadow:0 0 8px rgba(200,230,14,.25)}
+86%{opacity:.2;text-shadow:none}
+87%{opacity:.6;text-shadow:0 0 5px rgba(200,230,14,.12)}
+89%{opacity:.1;text-shadow:none}
+90%{opacity:.35;text-shadow:0 0 3px rgba(200,230,14,.06)}
+91%{opacity:.05;text-shadow:none}
+93%{opacity:.25;text-shadow:0 0 2px rgba(200,230,14,.04)}
+93.5%{opacity:.02;text-shadow:none}
+95%{opacity:.4;text-shadow:0 0 4px rgba(200,230,14,.1)}
+96%{opacity:.7;text-shadow:0 0 7px rgba(200,230,14,.2)}
+97%{opacity:.9;text-shadow:0 0 10px rgba(200,230,14,.35)}
+100%{opacity:1;text-shadow:0 0 12px #C8E60E,0 0 24px rgba(200,230,14,.4)}
+}
+@keyframes heroTextUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes heroSweep{0%,100%{transform:translateX(-60%)}50%{transform:translateX(60%)}}
+@keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.ben-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(200,230,14,.06),transparent 60%),radial-gradient(ellipse at 80% 70%,rgba(150,73,189,.05),transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(255,107,0,.03),transparent 55%);pointer-events:none;border-radius:16px}
+.ben-card::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.008) 0 1px,transparent 1px 60px),repeating-linear-gradient(0deg,rgba(255,255,255,.005) 0 1px,transparent 1px 60px);pointer-events:none;border-radius:16px}
+.ben-card:hover{border-color:rgba(200,230,14,.3)!important;box-shadow:0 8px 28px rgba(0,0,0,.3)!important;transform:translateY(-3px)}
+@keyframes iconPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes iconGlow{0%,100%{filter:drop-shadow(0 2px 8px rgba(200,230,14,.15))}50%{filter:drop-shadow(0 4px 16px rgba(200,230,14,.3))}}
+.dark-sec{background:var(--dark);position:relative;overflow:hidden}
+.dark-sec::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0 1px,transparent 1px 80px),repeating-linear-gradient(0deg,rgba(255,255,255,.01) 0 1px,transparent 1px 80px);pointer-events:none}
+.dark-sec::after{content:'';position:absolute;top:-50%;left:-20%;width:140%;height:200%;background:radial-gradient(ellipse at 20% 20%,rgba(255,107,0,.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 30%,rgba(150,73,189,.05) 0%,transparent 45%),radial-gradient(ellipse at 50% 80%,rgba(200,230,14,.04) 0%,transparent 50%);pointer-events:none}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useMemo,useRef,useEffect}=React;
+const CATS=[
+{id:"all",name:"Все",icon:"🏥"},{id:"medicines",name:"Лекарства",icon:"💊"},
+{id:"medical_devices",name:"Мед. изделия",icon:"🩺"},{id:"consumables",name:"Расходники",icon:"🧪"},
+{id:"diagnostics",name:"Диагностика",icon:"📊"},{id:"surgical",name:"Хирургия",icon:"✂️"},
+{id:"bandages",name:"Перевязочные",icon:"🩹"},{id:"substances",name:"Субстанции",icon:"⚗️"},
+{id:"disinfection",name:"Дезинфекция",icon:"🧴"},{id:"workwear",name:"Спецодежда",icon:"🥼"},
+{id:"veterinary",name:"Ветеринария",icon:"🐾"},{id:"lab",name:"Лаборатория",icon:"🔬"},
+{id:"rehab",name:"Реабилитация",icon:"🦽"}];
+const PN={
+medicines:["Амоксициллин 500мг №20","Омепразол 20мг №30","Метформин 1000мг №60","Аторвастатин 20мг №30","Лозартан 50мг №30","Ибупрофен 400мг №50","Парацетамол 500мг №20","Цефтриаксон 1г №1 фл.","Дексаметазон 4мг/мл №25","Амлодипин 10мг №30","Кларитромицин 500мг №14","Эналаприл 10мг №20","Метопролол 50мг №30","Азитромицин 500мг №3","Диклофенак 75мг/3мл №5","Кеторолак 30мг/мл №10","Преднизолон 5мг №100","Фуросемид 40мг №50","Нимесулид 100мг №30","Мелоксикам 15мг №20","Цефалексин 500мг №16","Ципрофлоксацин 500мг №10","Левофлоксацин 500мг №10","Доксициклин 100мг №20","Флуконазол 150мг №1","Итраконазол 100мг №15","Нифедипин 20мг №50","Верапамил 80мг №50","Индапамид 2.5мг №30","Бисопролол 5мг №30","Розувастатин 10мг №30","Симвастатин 20мг №30","Клопидогрел 75мг №28","Варфарин 2.5мг №100","Ацетилсалициловая к-та 100мг №100","Пантопразол 40мг №28","Рабепразол 20мг №14","Домперидон 10мг №30","Лоперамид 2мг №20","Дротаверин 40мг №100","Метоклопрамид 10мг №50","Лоратадин 10мг №30","Цетиризин 10мг №20","Монтелукаст 10мг №28","Сальбутамол аэрозоль 100мкг","Ацетилцистеин 600мг №10","Амброксол 30мг №20","Бромгексин 8мг №50","Габапентин 300мг №50","Прегабалин 75мг №56","Карбамазепин 200мг №50","Сертралин 50мг №28","Флуоксетин 20мг №30","Амитриптилин 25мг №50","Инсулин лизпро 100ЕД/мл","Инсулин гларгин 100ЕД/мл","Метформин+Глибенкламид №30","Гликлазид 60мг №30"],
+medical_devices:["Тонометр AND UA-888","Глюкометр OneTouch Select Plus","Пульсоксиметр MD300C21C","Небулайзер Omron NE-C28","Термометр B.Well WF-5000","Аппарат ИВЛ Hamilton C1","Монитор Mindray iPM-10","Дефибриллятор HeartSave 6","ЭКГ-аппарат Schiller AT-2","УЗИ-сканер Mindray DC-70","Рентген Shimadzu RADspeed","Эндоскоп Olympus GIF-HQ190","Стетоскоп Littmann Classic III","Отоскоп Heine Mini 3000","Офтальмоскоп Heine Beta 200","Ларингоскоп Macintosh набор","Электрокоагулятор ЭХВЧ-400","Магнитотерапия АМнп-01","Электрофорез Поток-1","Кислородный концентратор 5л","Стол операционный ОУ-01К","Стерилизатор паровой ВК-75","Шприцевой насос B.Braun","Инфузионная помпа Mindray","Холодильник фарм. Позис ХФ-400","Коляска Ortonica Base 100","Корсет поясничный Orlett"],
+consumables:["Шприц 5мл Luer (100шт)","Шприц 10мл Luer (100шт)","Шприц 20мл Luer (50шт)","Шприц инсулиновый U-100 (100шт)","Игла 0.8x40мм (100шт)","Система инфузий (50шт)","Катетер в/в 18G (50шт)","Катетер в/в 20G (50шт)","Катетер Фолея №16 (10шт)","Перчатки нитрил S (100шт)","Перчатки нитрил M (100шт)","Перчатки нитрил L (100шт)","Перчатки хирург. стер. (50пар)","Маска мед. 3-сл. (50шт)","Респиратор FFP2 (20шт)","Бахилы (100пар)","Халат хирург. стер. (5шт)","Пелёнка впитыв. 60x90 (30шт)","Пробирка EDTA 4мл (100шт)","Тест-полоски глюкоза (50шт)","Скальпель одноразовый №10 (10шт)","Шовный материал 3/0 (12шт)","Электрод ЭКГ (50шт)","Гель для УЗИ 1000мл","Повязка IV фикс. (100шт)"],
+diagnostics:["Анализатор Mindray BC-5150","Анализатор биохим. BS-240","Анализатор мочи DocUReader","Коагулометр STA Compact Max","Анализатор газов ABL90","Микроскоп Olympus CX23","Центрифуга СМ-6М","Спектрофотометр ПЭ-5400ВИ","ПЦР-амплификатор DTprime","Ламинарный бокс Ламинар-С","Морозильник -80°C Haier","Весы аналит. Sartorius 0.1мг","Пипетка 100-1000мкл","Криопробирка 2мл (500шт)","Реагент гематол. ABX (20л)","Контроль качества (6x5мл)","Калибратор биохимический"],
+surgical:["Скальпель брюшистый 150мм","Скальпель остроконечный 150мм","Ножницы хирург. прямые 170мм","Ножницы Купера 170мм","Пинцет анатомический 150мм","Пинцет хирургический 150мм","Зажим Кохера 160мм","Зажим Бильрота 160мм","Иглодержатель Хегара 160мм","Крючок Фарабефа пара","Троакар лапароскоп. 10мм","Зажим Maryland","Степлер линейный 75мм","Набор спинальной анест. 25G","Набор эпидуральной анест. 18G"],
+bandages:["Бинт стер. 7м x 14см (10шт)","Бинт нестер. 5м x 10см (20шт)","Бинт эластичный 5м x 8см (10шт)","Салфетка стер. 16x14 (10шт)","Салфетка спиртовая (100шт)","Повязка Бранолинд 10x20 (30шт)","Повязка гидрогелевая (10шт)","Пластырь гипоаллерг. (12шт)","Пластырь водостойкий (100шт)","Жгут турникет CAT","Шина Крамера 80мм (10шт)","Бандаж послеоперационный","Компресс холод/тепло"],
+substances:["Парацетамол субстанция 25кг","Ибупрофен субстанция 25кг","Амоксициллин субстанция 10кг","Метформин HCl 25кг","Омепразол субстанция 5кг","Диклофенак натрия 10кг","Цефтриаксон натрия 5кг","Лидокаин HCl 5кг","Глюкоза моногидрат 25кг","NaCl фарм. 25кг","МКЦ фарм. 25кг","Повидон К-30 25кг","Магния стеарат 25кг","Этанол 96% 10л"],
+disinfection:["Хлоргексидин 0.05% 1л (12шт)","Мирамистин 0.01% 500мл (12шт)","Перекись водорода 3% 1л (12шт)","Спирт 70% 1л (12шт)","Аламинол 1л","Септолит-Тетра 1л","Антисептик 1л с дозатором (12шт)","Крафт-пакеты 100x200 (100шт)","Дозатор локтевой настенный"],
+workwear:["Халат мед. жен. р.44-54","Халат мед. муж. р.46-56","Халат хирургический р.44-56","Костюм хирургический р.42-56","Обувь хирург. Suecos р.36-47","Очки защитные закрытые","Комбинезон Tyvek р.M-XXL","Фартук рентгенозащитный"],
+veterinary:["Амоксициллин вет. 15% 100мл","Энрофлоксацин вет. 10% 100мл","Вакцина Нобивак Rabies (10д)","Вакцина Нобивак DHPPi (10д)","Серения вет. 10мг/мл","Royal Canin Hepatic 12кг","Hill's k/d 12кг","Глюкометр AlphaTRAK","Стол ветеринарный СВ-1"],
+lab:["Бокс вытяжной 1200мм","Шкаф сушильный СНОЛ-58/350","Хроматограф Кристалл 5000","ВЭЖХ LC-20 Shimadzu","Титратор Titrando 905","Климат. камера ICH260L","Деионизатор ELGA Purelab","Лиофильная сушилка","Мешалка магнитная"],
+rehab:["Коляска активная Kuschall","Коляска с электроприводом","Ходунки роллаторные","Костыли подлокотные пара","Тренажёр разработки колена","Велотренажёр MOTOmed","Подъёмник для пациентов","Кровать функциональная 4-секц.","Ортез коленный шарнирный","Аппарат электростимуляции","Мяч гимнастический 65см"]};
+const SELLERS=["ФармОптТрейд","МедСнаб-Центр","Гиппократ+","ФармаЛайн","МедКомплект","БиоМедСервис","ПрофМедика","ФармАльянс","МедТехника Плюс","ФармИнвест","МедПоставка","АльфаФарм","МедГарант","ОптМедТорг","ФармСтандарт Опт","МедЭкспресс","ГлобалФарм","ФармПартнёр","МедДистрибуция","ЕвроФармОпт","ПроМедТех","ФармЛогистик","МедРесурс","ФармТрейдинг","МедОптима","СигмаМед","ФармДоставка","МедСклад","ФармЮнион","ИнтерМедСнаб"];
+function sr(seed){let s=seed;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}}
+function gen(){const p=[];const r=sr(42);let id=1;
+for(const c of Object.keys(PN)){for(const n of PN[c]){const sc=3+Math.floor(r()*5);const u=new Set();
+const bp=c==="substances"?15000+r()*200000:c==="diagnostics"||c==="lab"?30000+r()*2500000:c==="surgical"?800+r()*45000:c==="medical_devices"?2000+r()*350000:c==="rehab"?3000+r()*180000:c==="workwear"?500+r()*12000:c==="veterinary"?300+r()*25000:c==="disinfection"?150+r()*8000:c==="consumables"?200+r()*15000:c==="bandages"?100+r()*5000:100+r()*8000;
+for(let s=0;s<sc;s++){let si;do{si=Math.floor(r()*30)}while(u.has(si));u.add(si);
+p.push({id:id++,name:n,category:c,seller:SELLERS[si],price:Math.round(bp*(.75+r()*.55)),inStock:r()>.15,minOrder:c==="substances"?(1+Math.floor(r()*3))*25:c==="lab"||c==="diagnostics"?1:1+Math.floor(r()*10),days:1+Math.floor(r()*14),rating:+(3.5+r()*1.5).toFixed(1)})}}}return p}
+const AP=gen();
+const fp=p=>p.toLocaleString("ru-RU")+" ₽";
+const fm=(p,m)=>Math.ceil(p/m).toLocaleString("ru-RU")+" ₽";
+const BEN=[
+{icon:"⚡",t:"Факторинг",pain:"Поставил товар — жди оплату 30–60 дней. Кассовый разрыв каждый месяц.",sol:"Деньги за 2 дня после поставки. Дебиторка — забота банка, не ваша."},
+{icon:"🕐",t:"BNPL без процентов",pain:"Закупка за свой счёт сразу, а выручка — через месяцы.",sol:"Покупайте сейчас, платите через 60 дней. Одобрение за минуты."},
+{icon:"💳",t:"Кредит 6/12/18 мес",pain:"Крупная закупка, а бюджет ограничен. Банковский кредит — долго.",sol:"Рассрочка от ОТП Банка. Льготная ставка для участников."},
+{icon:"🔍",t:"Прозрачный выбор",pain:"Коррупция и откаты в тендерах 44-ФЗ / 223-ФЗ. Непрозрачные цены.",sol:"Открытый каталог, рейтинги, сравнение цен. Выбираете вы."},
+{icon:"📦",t:"Фулфилмент под ключ",pain:"Логистика дорогая, своего склада нет.",sol:"Хранение, сборка и доставка через партнёров по корп. тарифам."},
+{icon:"🔄",t:"Гибкие возвраты",pain:"Некачественный товар — разбирайся сам, возврат через суд.",sol:"Откажитесь и закажите у другого в два клика. Банк — гарант."},
+{icon:"🛡️",t:"Доверенная среда",pain:"Фирмы-однодневки, нет гарантий оплаты и качества.",sol:"Проверенные клиенты ОТП Банка. Безопасные расчёты."}];
+
+const BEN_IMG=[
+"./assets/icon_0.png",
+"./assets/icon_1.png",
+"./assets/icon_2.png",
+"./assets/icon_3.png",
+"./assets/icon_4.png",
+"./assets/icon_5.png",
+"./assets/icon_6.png"
+];
+
+/* OTP Bank Logo — точная копия с сайта */
+function OtpLogo({dark=true,w=140}){
+const c=dark?"#1d1d1f":"#fff";
+return(<svg viewBox="0 0 180 32" width={w} height={w*32/180} xmlns="http://www.w3.org/2000/svg">
+<path d="M12,3 A13,13 0 1,0 23,8" stroke={c} strokeWidth="3" fill="none" strokeLinecap="round"/>
+<circle cx="23" cy="8" r="4" fill={c}/>
+<text x="34" y="23" fontFamily="'Manrope',sans-serif" fontWeight="900" fontSize="19" fill={c} letterSpacing="-0.5">ОТПБАНК</text>
+</svg>);}
+
+/* Hero animation — clockwise rotating border, 30% bigger */
+function HeroViz({onReady}){
+const[show,setShow]=useState(false);
+useEffect(()=>{const t=setTimeout(()=>setShow(true),400);return()=>clearTimeout(t)},[]);
+useEffect(()=>{if(show&&onReady){const t=setTimeout(onReady,900);return()=>clearTimeout(t)}},[show]);
+return(
+<div style={{display:"flex",justifyContent:"center",marginBottom:28}}>
+<div style={{position:"relative",width:260,height:156,borderRadius:20,opacity:show?1:0,transform:show?"scale(1)":"scale(.85)",transition:"all .8s cubic-bezier(.16,1,.3,1)"}}>
+{/* Rotating conic gradient border */}
+<div style={{position:"absolute",inset:-2,borderRadius:22,overflow:"hidden"}}>
+<div style={{position:"absolute",top:"50%",left:"50%",width:"150%",height:"150%",marginLeft:"-75%",marginTop:"-75%",animation:"rotateBorder 10.7s linear infinite"}}>
+<div style={{width:"100%",height:"100%",background:"conic-gradient(from 0deg,transparent 0%,rgba(200,230,14,.7) 8%,rgba(255,107,0,.5) 16%,transparent 24%,transparent 50%,rgba(150,73,189,.5) 58%,rgba(200,230,14,.4) 66%,transparent 74%)"}}/>
+</div>
+</div>
+{/* Inner content */}
+<div style={{position:"relative",zIndex:1,width:"100%",height:"100%",borderRadius:20,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"linear-gradient(135deg,rgba(22,22,24,.95),rgba(30,30,34,.92))",boxShadow:"inset 0 0 40px rgba(200,230,14,.05)"}}>
+<span style={{fontSize:31,fontWeight:900,color:"#fff",letterSpacing:-.5}}>ОТП NEXT</span>
+<span style={{fontSize:12,color:"rgba(255,255,255,.5)",fontWeight:600,marginTop:4,letterSpacing:1.3}}>МАРКЕТПЛЕЙС</span>
+</div></div></div>);}
+
+/* Chad mascot — plays once, waits 8s, replays */
+const CHAD_SRC="./assets/video_chad.mp4";
+function ChadMascot(){
+const ref=useRef(null);
+useEffect(()=>{const v=ref.current;if(!v)return;let t;
+const replay=()=>{v.currentTime=0;v.play().catch(()=>{})};
+const onEnd=()=>{t=setTimeout(replay,8000)};
+v.addEventListener("ended",onEnd);
+t=setTimeout(replay,1800);
+return()=>{clearTimeout(t);v.removeEventListener("ended",onEnd)}},[]);
+return(<video ref={ref} muted playsInline src={CHAD_SRC} style={{position:"absolute",right:"5%",bottom:0,width:200,height:200,objectFit:"contain",mixBlendMode:"screen",zIndex:2,pointerEvents:"none",opacity:.95}}/>);}
+
+/* Scroll-reveal item */
+function RevealItem({children,delay=0}){
+const ref=useRef(null);const[v,setV]=useState(false);
+useEffect(()=>{const el=ref.current;if(!el)return;
+const obs=new IntersectionObserver(([e])=>{if(e.isIntersecting){setV(true);obs.disconnect()}},{threshold:0.15});
+obs.observe(el);return()=>obs.disconnect()},[]);
+return(<div ref={ref} style={{opacity:v?1:0,transform:v?"translateY(0)":"translateY(24px)",transition:`all 0.6s cubic-bezier(.16,1,.3,1) ${delay}s`}}>{children}</div>);}
+
+/* Modal */
+function Modal({open,onClose}){
+const[form,setForm]=useState({company:"",inn:"",name:"",phone:""});
+const[sent,setSent]=useState(false);
+const[vis,setVis]=useState(false);const[an,setAn]=useState(false);const ov=useRef(null);
+
+useEffect(()=>{if(open){setVis(true);setSent(false);setForm({company:"",inn:"",name:"",phone:""});document.body.style.overflow="hidden";requestAnimationFrame(()=>requestAnimationFrame(()=>setAn(true)))}else{setAn(false);document.body.style.overflow="";const t=setTimeout(()=>setVis(false),400);return()=>clearTimeout(t)}return()=>{document.body.style.overflow=""}},[open]);
+if(!vis)return null;const ok=form.company&&form.name&&form.phone;
+return(<div ref={ov} onClick={e=>e.target===ov.current&&onClose()} style={{position:"fixed",inset:0,zIndex:1000,background:an?"rgba(0,0,0,.5)":"rgba(0,0,0,0)",backdropFilter:an?"blur(20px)":"blur(0)",display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"16px 16px 0",transition:"all .4s cubic-bezier(.16,1,.3,1)",cursor:"pointer"}}>
+<div style={{background:"#fff",borderRadius:"28px 28px 0 0",maxWidth:680,width:"100%",maxHeight:"92vh",overflowY:"auto",overflowX:"hidden",transform:an?"translateY(0)":"translateY(100%)",opacity:an?1:0,transition:"transform .5s cubic-bezier(.16,1,.3,1),opacity .3s",boxShadow:"0 -20px 60px rgba(0,0,0,.15)",cursor:"default",clipPath:"inset(0 0 0 0 round 28px 28px 0 0)"}} onClick={e=>e.stopPropagation()}>
+{/* Handle */}
+<div style={{display:"flex",justifyContent:"center",padding:"12px 0 0"}}><div style={{width:40,height:4,borderRadius:2,background:"#e0e0e0"}}/></div>
+{/* Sticky close */}
+<div style={{position:"sticky",top:0,zIndex:10,display:"flex",justifyContent:"flex-end",padding:"8px 20px 0 0"}}><button onClick={onClose} style={{width:36,height:36,borderRadius:12,background:"#f5f5f7",border:"none",color:"#999",fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",transition:"all .2s"}}
+onMouseEnter={e=>{e.target.style.background="#eee";e.target.style.color="#333"}} onMouseLeave={e=>{e.target.style.background="#f5f5f7";e.target.style.color="#999"}}>✕</button></div>
+<div style={{padding:"0 32px 40px"}}>
+{sent?(<div style={{textAlign:"center",padding:"48px 0 32px"}}>
+<div style={{width:72,height:72,borderRadius:20,background:"var(--lime)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:36,marginBottom:20}}>✓</div>
+<h2 style={{fontSize:26,fontWeight:800,marginBottom:8}}>Заявка отправлена</h2>
+<p style={{color:"var(--text2)",fontSize:15}}>Свяжемся в течение 1 рабочего дня</p></div>
+):(<>
+<div style={{textAlign:"center",marginBottom:28,marginTop:-8}}>
+<div style={{display:"inline-block",background:"var(--lime)",color:"#000",fontSize:10,fontWeight:800,letterSpacing:2,textTransform:"uppercase",padding:"6px 16px",borderRadius:20,marginBottom:16}}>Бизнес-Connect · ОТП Банк</div>
+<h2 style={{fontSize:28,fontWeight:900,margin:"0 0 6px",lineHeight:1.2,letterSpacing:-.5}}>Интересно попробовать?</h2>
+<p style={{color:"var(--text2)",fontSize:14,margin:0,lineHeight:1.5}}>Оставьте заявку на бета-тестирование ОТП NEXT</p></div>
+
+{/* Benefits grid 2×4 */}
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:28}}>
+{BEN.map((b,i)=>(<div key={i} className="ben-card" style={{background:"#1e1e22",borderRadius:16,padding:16,border:"1px solid rgba(200,230,14,.12)",position:"relative",overflow:"hidden",transition:"all .3s",...(i===BEN.length-1&&BEN.length%2!==0?{gridColumn:"1/-1"}:{})}}
+onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(200,230,14,.5)";e.currentTarget.style.boxShadow="0 8px 28px rgba(0,0,0,.1), 0 0 0 1px rgba(200,230,14,.15)";e.currentTarget.style.transform="translateY(-3px)"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#f0f0f5";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="none"}}>
+{i===BEN.length-1&&BEN.length%2!==0?(<div style={{display:"flex",gap:16,alignItems:"center"}}><img src={BEN_IMG[i]} width="80" height="80" style={{borderRadius:12,flexShrink:0,animation:`iconFloat 3s ease-in-out ${i*0.3}s infinite, iconGlow 3s ease-in-out ${i*0.3}s infinite`}} alt={b.t}/><div><div style={{fontSize:14,fontWeight:700,marginBottom:8,color:"#f5f5f7"}}>{b.t}</div><div style={{fontSize:13,lineHeight:1.5,marginBottom:6}}><span style={{color:"#e63222",fontWeight:800}}>Боль: </span><span style={{color:"#e8836f",fontSize:13}}>{b.pain}</span></div><div style={{fontSize:13,lineHeight:1.5}}><span style={{color:"#1a9e3f",fontWeight:800}}>ОТП NEXT: </span><span style={{color:"#6fd88a",fontSize:13}}>{b.sol}</span></div></div></div>):(<><img src={BEN_IMG[i]} width="80" height="80" style={{marginBottom:10,display:"block",borderRadius:12,animation:`iconFloat 3s ease-in-out ${i*0.3}s infinite, iconGlow 3s ease-in-out ${i*0.3}s infinite`}} alt={b.t}/>
+<div style={{fontSize:14,fontWeight:700,marginBottom:8,color:"#f5f5f7"}}>{b.t}</div>
+<div style={{fontSize:13,lineHeight:1.5,marginBottom:6}}><span style={{color:"#e63222",fontWeight:800}}>Боль: </span><span style={{color:"#e8836f",fontSize:13}}>{b.pain}</span></div>
+<div style={{fontSize:13,lineHeight:1.5}}><span style={{color:"#1a9e3f",fontWeight:800}}>ОТП NEXT: </span><span style={{color:"#6fd88a",fontSize:13}}>{b.sol}</span></div></>)}</div>))}
+</div>
+
+{/* Form */}
+<div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+{[{k:"company",l:"Компания",p:"ООО «Фарм-Трейд»"},{k:"inn",l:"ИНН (необязательно)",p:"1234567890"},{k:"name",l:"Имя",p:"Иван"},{k:"phone",l:"Телефон",p:"+7 (999) 123-45-67"}].map(f=>(<div key={f.k}><label style={{color:"var(--text3)",fontSize:11,fontWeight:600,letterSpacing:.5,marginBottom:4,display:"block",textTransform:"uppercase"}}>{f.l}</label>
+<input value={form[f.k]} onChange={e=>setForm({...form,[f.k]:e.target.value})} placeholder={f.p} style={{width:"100%",boxSizing:"border-box",padding:"13px 16px",background:"#f5f5f7",border:"1px solid #e8e8ed",borderRadius:14,color:"var(--text)",fontSize:15,outline:"none",transition:"all .2s",fontFamily:"Manrope,sans-serif"}}
+onFocus={e=>{e.target.style.borderColor="var(--lime)";e.target.style.boxShadow="0 0 0 3px rgba(200,230,14,.12)";e.target.style.background="#fff"}}
+onBlur={e=>{e.target.style.borderColor="#e8e8ed";e.target.style.boxShadow="none";e.target.style.background="#f5f5f7"}}/></div>))}</div>
+<button onClick={()=>ok&&setSent(true)} disabled={!ok} style={{width:"100%",padding:"16px",border:"none",borderRadius:16,background:ok?"var(--lime)":"#f0f0f5",color:ok?"#000":"#ccc",fontSize:16,fontWeight:800,cursor:ok?"pointer":"not-allowed",transition:"all .3s",letterSpacing:-.3}}>Отправить заявку</button>
+<p style={{color:"var(--text3)",fontSize:10,textAlign:"center",marginTop:10}}>Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p></>)}</div></div></div>);}
+
+/* Card — dark gray background */
+function Card({p,onClick}){
+const ct=CATS.find(c=>c.id===p.category);
+const gfs=(pr,m)=>{const s=Math.ceil(pr/m).toLocaleString("ru-RU");return s.length>6?11:s.length>4?13:15};
+return(<div style={{background:"var(--card-bg)",borderRadius:16,padding:14,border:"1px solid var(--card-border)",display:"flex",flexDirection:"column",transition:"all .25s"}}
+onMouseEnter={e=>{e.currentTarget.style.boxShadow="0 8px 28px rgba(0,0,0,.2)";e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.borderColor="rgba(200,230,14,.3)"}}
+onMouseLeave={e=>{e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="none";e.currentTarget.style.borderColor="var(--card-border)"}}>
+<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:8}}>
+<span style={{fontSize:12}}>{ct?.icon}</span><span style={{fontSize:10,color:"var(--card-text3)",fontWeight:600}}>{ct?.name}</span>
+<span style={{marginLeft:"auto",color:"#f59e0b",fontSize:10}}>{"★".repeat(Math.floor(p.rating))}</span><span style={{color:"var(--card-text3)",fontSize:10}}>{p.rating}</span></div>
+<h3 style={{color:"var(--card-text)",fontSize:13,fontWeight:700,margin:"0 0 6px",lineHeight:1.35,minHeight:34}}>{p.name}</h3>
+<div style={{color:"var(--card-text2)",fontSize:11,marginBottom:6}}>{p.seller}</div>
+<div style={{display:"flex",gap:4,marginBottom:10,flexWrap:"wrap"}}>
+<span style={{background:p.inStock?"rgba(74,222,128,.12)":"rgba(248,113,113,.12)",color:p.inStock?"#4ade80":"#f87171",fontSize:9,padding:"3px 7px",borderRadius:6,fontWeight:600}}>{p.inStock?"В наличии":"Под заказ"}</span>
+<span style={{background:"rgba(255,255,255,.06)",color:"var(--card-text3)",fontSize:9,padding:"3px 7px",borderRadius:6}}>от {p.minOrder} шт</span>
+<span style={{background:"rgba(255,255,255,.06)",color:"var(--card-text3)",fontSize:9,padding:"3px 7px",borderRadius:6}}>{p.days} дн</span></div>
+<div style={{marginTop:"auto"}}>
+<div style={{fontSize:17,fontWeight:900,color:"var(--card-text)",marginBottom:8}}>{fp(p.price)}</div>
+<div style={{background:"rgba(255,255,255,.04)",borderRadius:12,padding:10,marginBottom:10,border:"1px solid rgba(255,255,255,.06)"}}>
+<div style={{fontSize:9,color:"var(--card-text2)",fontWeight:700,letterSpacing:1,textTransform:"uppercase",marginBottom:6}}>РАССРОЧКА ОТ ОТП БАНКА</div>
+<div style={{display:"flex",gap:4}}>
+{[[6,"var(--orange)"],[12,"var(--purple)"],[18,"var(--lime)"]].map(([m,c])=>(<div key={m} style={{flex:1,background:"rgba(255,255,255,.04)",borderRadius:10,padding:"6px 4px",textAlign:"center",border:"1px solid rgba(255,255,255,.06)"}}>
+<div style={{fontSize:10,color:c,fontWeight:700,marginBottom:1}}>{m} мес</div>
+<div style={{fontSize:gfs(p.price,m),fontWeight:900,color:c,lineHeight:1.1,whiteSpace:"nowrap"}}>{fm(p.price,m)}</div></div>))}</div></div>
+<button onClick={onClick} style={{width:"100%",padding:10,border:"none",borderRadius:12,background:"var(--lime)",color:"#000",fontSize:12,fontWeight:800,cursor:"pointer",transition:"all .2s"}}
+onMouseEnter={e=>{e.target.style.background="#d4f020"}} onMouseLeave={e=>{e.target.style.background="var(--lime)"}}>Оформить заказ</button></div></div>);}
+
+/* Mobile Preview Modal */
+function MobModal({open,onClose}){
+const[vis,setVis]=useState(false);const[an,setAn]=useState(false);const[mc,setMc]=useState("all");const ov=useRef(null);
+const mi=useMemo(()=>{let i=AP;if(mc!=="all")i=i.filter(p=>p.category===mc);return i.slice(0,30)},[mc]);
+useEffect(()=>{if(open){setVis(true);document.body.style.overflow="hidden";requestAnimationFrame(()=>requestAnimationFrame(()=>setAn(true)))}else{setAn(false);document.body.style.overflow="";const t=setTimeout(()=>setVis(false),400);return()=>clearTimeout(t)}return()=>{document.body.style.overflow=""}},[open]);
+if(!vis)return null;
+return(<div ref={ov} onClick={e=>e.target===ov.current&&onClose()} style={{position:"fixed",inset:0,zIndex:1000,background:an?"rgba(0,0,0,.6)":"rgba(0,0,0,0)",backdropFilter:an?"blur(24px)":"blur(0)",display:"flex",alignItems:"center",justifyContent:"center",transition:"all .4s cubic-bezier(.16,1,.3,1)"}}>
+<div style={{width:360,height:680,borderRadius:44,background:"linear-gradient(180deg,#1a1a1e,#2a2a30)",border:"4px solid #3a3a40",boxShadow:"0 40px 80px rgba(0,0,0,.4)",overflow:"hidden",transform:an?"scale(1) rotate(0deg)":"scale(.85) rotate(3deg)",opacity:an?1:0,transition:"all .5s cubic-bezier(.16,1,.3,1)"}}>
+<div style={{display:"flex",justifyContent:"space-between",padding:"10px 20px 6px",color:"#fff",fontSize:12,fontWeight:600}}><span>12:30</span><div style={{width:80,height:24,borderRadius:20,background:"#000"}}/><span style={{fontSize:10}}>●●●</span></div>
+<div style={{margin:"0 10px 10px",borderRadius:28,background:"#fff",height:"calc(100% - 50px)",overflow:"hidden",display:"flex",flexDirection:"column"}}>
+{/* Nav */}
+<div style={{padding:"12px 14px 8px",borderBottom:"1px solid #f0f0f5",display:"flex",alignItems:"center",gap:8}}>
+<span style={{fontSize:13,fontWeight:800,color:"var(--purple)"}}>ОТП NEXT</span>
+<button onClick={onClose} style={{marginLeft:"auto",width:24,height:24,borderRadius:8,background:"#f5f5f7",border:"none",color:"#999",fontSize:10,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button></div>
+{/* Search */}
+<div style={{padding:"6px 10px"}}><div style={{background:"#f5f5f7",borderRadius:8,padding:"6px 10px",fontSize:10,color:"#999"}}>🔍 Поиск по каталогу...</div></div>
+{/* Body: sidebar + items */}
+<div style={{flex:1,display:"flex",overflow:"hidden"}}>
+{/* Left sidebar cats */}
+<div style={{width:70,flexShrink:0,overflowY:"auto",borderRight:"1px solid #f0f0f5",padding:"6px 4px"}}>
+{CATS.slice(0,8).map(c=>(<button key={c.id} onClick={()=>setMc(c.id)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,width:"100%",padding:"6px 2px",borderRadius:8,border:"none",background:mc===c.id?"var(--lime)":"transparent",color:mc===c.id?"#000":"var(--text3)",fontSize:7,fontWeight:mc===c.id?700:500,cursor:"pointer",marginBottom:2,fontFamily:"Manrope,sans-serif"}}>
+<span style={{fontSize:14}}>{c.icon}</span><span style={{lineHeight:1.1,textAlign:"center"}}>{c.name}</span></button>))}
+</div>
+{/* Items */}
+<div style={{flex:1,overflowY:"auto",padding:"4px 8px 10px"}}>
+{mi.map(p=>{const ct=CATS.find(c=>c.id===p.category);return(<div key={p.id} style={{padding:"10px 0",borderBottom:"1px solid #f5f5f7"}}>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+<div style={{flex:1}}><span style={{fontSize:8,marginRight:3}}>{ct?.icon}</span><span style={{fontSize:11,fontWeight:700}}>{p.name}</span>
+<div style={{fontSize:9,color:"var(--text3)",marginTop:2}}>{p.seller}</div></div>
+<span style={{fontSize:8,color:"#f59e0b",flexShrink:0}}>★{p.rating}</span></div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:4}}>
+<span style={{fontSize:14,fontWeight:900}}>{fp(p.price)}</span>
+<span style={{background:"var(--lime)",borderRadius:6,padding:"3px 10px",fontSize:9,fontWeight:700,cursor:"pointer"}}>Заказ</span></div></div>)})}
+</div></div></div></div></div>);}
+
+/* APP */
+function App(){
+const[cat,setCat]=useState("all");const[q,setQ]=useState("");const[sort,setSort]=useState("price_asc");
+const[modal,setModal]=useState(false);const[mobModal,setMobModal]=useState(false);const[page,setPage]=useState(1);const[heroReady,setHeroReady]=useState(false);
+const PP=30;
+const f=useMemo(()=>{let i=AP;if(cat!=="all")i=i.filter(p=>p.category===cat);if(q.trim()){const s=q.toLowerCase();i=i.filter(p=>p.name.toLowerCase().includes(s)||p.seller.toLowerCase().includes(s))}
+if(sort==="price_asc")i=[...i].sort((a,b)=>a.price-b.price);else if(sort==="price_desc")i=[...i].sort((a,b)=>b.price-a.price);else if(sort==="rating")i=[...i].sort((a,b)=>b.rating-a.rating);else if(sort==="delivery")i=[...i].sort((a,b)=>a.days-b.days);return i},[cat,q,sort]);
+const paged=f.slice(0,page*PP);
+useEffect(()=>setPage(1),[cat,q,sort]);
+
+return(<div style={{minHeight:"100vh",background:"var(--bg)"}}>
+
+{/* HERO — top of page */}
+<section className="dark-sec" style={{padding:"48px 28px 40px",textAlign:"center"}}>
+<div style={{position:"absolute",top:0,left:"5%",right:"5%",height:3,background:"linear-gradient(90deg,transparent,rgba(255,165,0,.5),rgba(255,107,0,.7),rgba(255,165,0,.5),transparent)",zIndex:1}}/>
+{/* Sweeping ambient light */}
+<div style={{position:"absolute",top:"-30%",left:0,width:"40%",height:"160%",background:"radial-gradient(ellipse at center,rgba(255,255,255,.04),transparent 70%)",pointerEvents:"none",animation:"heroSweep 8s ease-in-out infinite",zIndex:0}}/>
+
+<div style={{position:"relative",zIndex:1,maxWidth:860,margin:"0 auto"}}>
+<HeroViz onReady={()=>setHeroReady(true)}/>
+<div style={{marginTop:0,opacity:heroReady?1:0,transform:heroReady?"translateY(0)":"translateY(24px)",transition:"all 1s cubic-bezier(.16,1,.3,1)"}}>
+<h1 style={{fontSize:"clamp(28px,5vw,48px)",fontWeight:900,color:"#fff",margin:0,lineHeight:1.1,letterSpacing:-1.5}}>
+<span style={{color:"var(--lime)",animation:heroReady?"pharmaFlicker 12s linear 1.2s infinite":"none"}}>Pharma</span> и медизделия<br/>
+<span style={{color:"var(--purple)"}}>от проверенных поставщиков</span></h1></div></div></section>
+
+{/* TAGS — centered */}
+<section style={{background:"#fff",padding:"16px 28px",borderBottom:"1px solid var(--border)"}}>
+<div style={{maxWidth:1320,margin:"0 auto",textAlign:"center"}}>
+<div style={{display:"inline-flex",gap:10,flexWrap:"wrap",justifyContent:"center"}}>
+{[{icon:"⚡",name:"Факторинг"},{icon:"🕐",name:"BNPL-рассрочка"},{icon:"📦",name:"Фулфилмент"},{icon:"✅",name:"МДЛП / Честный ЗНАК"}].map(p=>(<div key={p.name} style={{background:"#f9f9fb",borderRadius:12,padding:"10px 18px",display:"flex",alignItems:"center",gap:8,border:"1px solid #f0f0f5",transition:"all .2s",cursor:"pointer"}}
+onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--lime)"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#f0f0f5"}}>
+<span style={{fontSize:18}}>{p.icon}</span><span style={{fontSize:12,fontWeight:700}}>{p.name}</span></div>))}</div>
+<div style={{color:"var(--text3)",fontSize:13,fontWeight:600,marginTop:12}}>{AP.length.toLocaleString("ru-RU")} товаров · {SELLERS.length} поставщиков</div>
+</div></section>
+
+{/* SEARCH/SORT — right-aligned above catalog */}
+<div style={{maxWidth:1320,margin:"0 auto",padding:"12px 28px 0",display:"flex",justifyContent:"flex-end",alignItems:"center",gap:10}}>
+<div style={{position:"relative",width:320}}>
+<input value={q} onChange={e=>setQ(e.target.value)} placeholder="Поиск по каталогу..." style={{width:"100%",boxSizing:"border-box",padding:"9px 14px 9px 36px",background:"#f5f5f7",border:"1px solid transparent",borderRadius:12,color:"var(--text)",fontSize:13,outline:"none",transition:"all .2s",fontFamily:"Manrope,sans-serif"}}
+onFocus={e=>{e.target.style.borderColor="var(--lime)";e.target.style.background="#fff"}} onBlur={e=>{e.target.style.borderColor="transparent";e.target.style.background="#f5f5f7"}}/>
+<span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",fontSize:13,opacity:.35}}>🔍</span>
+{q&&<button onClick={()=>setQ("")} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"#e8e8ed",border:"none",color:"#999",width:20,height:20,borderRadius:6,cursor:"pointer",fontSize:10,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>}
+</div>
+<select value={sort} onChange={e=>setSort(e.target.value)} style={{background:"#f5f5f7",border:"1px solid #e8e8ed",borderRadius:10,color:"var(--text2)",fontSize:12,padding:"8px 12px",outline:"none",cursor:"pointer",fontFamily:"Manrope,sans-serif",fontWeight:600}}>
+<option value="price_asc">Цена ↑</option><option value="price_desc">Цена ↓</option><option value="rating">Рейтинг</option><option value="delivery">Доставка</option></select>
+</div>
+
+{/* CATALOG */}
+<div style={{maxWidth:1320,margin:"0 auto",padding:"12px 28px 0",display:"flex",gap:20,height:"calc(100vh - 60px)"}}>
+<aside style={{width:190,flexShrink:0,overflowY:"auto"}}>
+<div style={{fontSize:9,color:"var(--text3)",fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",marginBottom:10}}>Каталог</div>
+{CATS.map(c=>{const a=cat===c.id;return(<button key={c.id} onClick={()=>setCat(c.id)} style={{display:"flex",alignItems:"center",gap:7,width:"100%",padding:"8px 12px",borderRadius:10,border:"none",background:a?"var(--lime)":"transparent",color:a?"#000":"var(--text2)",fontSize:12,fontWeight:a?800:500,cursor:"pointer",textAlign:"left",transition:"all .15s",marginBottom:1,fontFamily:"Manrope,sans-serif"}}
+onMouseEnter={e=>{if(!a)e.currentTarget.style.background="#f5f5f7"}} onMouseLeave={e=>{if(!a)e.currentTarget.style.background=a?"var(--lime)":"transparent"}}>
+<span style={{fontSize:13}}>{c.icon}</span><span style={{flex:1}}>{c.name}</span></button>)})}</aside>
+<main className="cs" style={{flex:1,minWidth:0,overflowY:"auto",paddingRight:8,paddingBottom:20}}>
+{f.length===0?(<div style={{textAlign:"center",padding:"80px 20px"}}><div style={{fontSize:48,opacity:.4}}>🔍</div><div style={{fontSize:16,color:"var(--text2)",fontWeight:600,marginTop:12}}>Ничего не найдено</div></div>
+):(<><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(230px,1fr))",gap:12}}>
+{paged.map(p=><Card key={p.id} p={p} onClick={()=>setModal(true)}/>)}</div>
+{paged.length<f.length&&(<div style={{textAlign:"center",marginTop:24,paddingBottom:8}}>
+<button onClick={()=>setPage(page+1)} style={{padding:"12px 32px",borderRadius:12,border:"1px solid var(--card-border)",background:"var(--card-bg)",color:"var(--card-text2)",fontSize:13,fontWeight:700,cursor:"pointer",transition:"all .2s",fontFamily:"Manrope,sans-serif"}}
+onMouseEnter={e=>{e.target.style.background="var(--lime)";e.target.style.color="#000"}} onMouseLeave={e=>{e.target.style.background="var(--card-bg)";e.target.style.color="var(--card-text2)"}}>
+Ещё {(f.length-paged.length).toLocaleString("ru-RU")} товаров</button></div>)}</>)}</main></div>
+
+{/* Spacer between catalog and mobile */}
+<div style={{height:48,background:"var(--bg)"}}/>
+
+{/* MOBILE */}
+<section style={{background:"linear-gradient(135deg,#7b4baa,#9649bd 40%,#6b3d99)",padding:"40px 28px",position:"relative",overflow:"hidden"}}>
+<div style={{position:"absolute",top:"-20%",right:"-10%",width:300,height:300,background:"radial-gradient(circle,rgba(200,230,14,.12),transparent 70%)",pointerEvents:"none"}}/>
+<div style={{maxWidth:1000,margin:"0 auto",display:"flex",alignItems:"center",gap:40,flexWrap:"wrap"}}>
+<div style={{flex:1,minWidth:280,position:"relative",zIndex:1}}>
+<h2 style={{fontSize:"clamp(22px,3vw,32px)",fontWeight:900,color:"#fff",lineHeight:1.1,marginBottom:10}}>
+<span style={{color:"var(--lime)"}}>ОТП NEXT</span> в смартфоне</h2>
+<p style={{color:"rgba(255,255,255,.7)",fontSize:14,lineHeight:1.6,marginBottom:16,maxWidth:360}}>Полнофункциональная мобильная веб-версия. Заказывайте, отслеживайте поставки, управляйте рассрочкой.</p>
+<div style={{background:"rgba(255,255,255,.12)",borderRadius:14,padding:"14px 18px",marginBottom:16,border:"1px solid rgba(255,255,255,.15)"}}>
+<div style={{fontSize:20,fontWeight:900,color:"var(--lime)"}}>Без установки приложения</div>
+<div style={{color:"rgba(255,255,255,.6)",fontSize:12,marginTop:4}}>Откройте в любом браузере — работает мгновенно</div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:16}}>
+{[{i:"📱",t:"Адаптивный UI"},{i:"⚡",t:"1700+ товаров"},{i:"🔔",t:"Push-уведомления"},{i:"📊",t:"Аналитика"}].map(f=>(<div key={f.t} style={{background:"rgba(255,255,255,.08)",borderRadius:10,padding:"8px 10px",display:"flex",alignItems:"center",gap:6,border:"1px solid rgba(255,255,255,.06)"}}>
+<span style={{fontSize:16}}>{f.i}</span><span style={{color:"#fff",fontSize:11,fontWeight:600}}>{f.t}</span></div>))}</div>
+<button onClick={()=>setMobModal(true)} style={{padding:"12px 28px",border:"none",borderRadius:12,background:"var(--lime)",color:"#000",fontSize:14,fontWeight:800,cursor:"pointer",transition:"all .2s"}}
+onMouseEnter={e=>{e.target.style.transform="translateY(-2px)"}} onMouseLeave={e=>{e.target.style.transform="none"}}>Попробовать превью</button></div>
+{/* Two iPhones — OTP Bank app style */}
+<div style={{flex:"0 0 auto",position:"relative",zIndex:1,perspective:1200}}>
+<div style={{display:"flex",gap:-30,alignItems:"flex-end"}}>
+{/* Phone 1 — front, Лекарства */}
+<div style={{width:200,height:420,borderRadius:36,background:"#1a1a1e",border:"2px solid #3a3a40",boxShadow:"0 30px 60px rgba(0,0,0,.5)",overflow:"hidden",position:"relative",zIndex:2,transform:"translateX(20px)"}}>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 16px 4px",color:"#fff",fontSize:9,fontWeight:600}}>
+<span>12:30</span><div style={{width:70,height:20,borderRadius:12,background:"#000",border:"1px solid #333"}}/><div style={{display:"flex",gap:3}}><span style={{fontSize:8}}>●</span><span style={{fontSize:8}}>●</span><span style={{fontSize:8}}>●</span></div></div>
+<div style={{margin:"0 6px 6px",borderRadius:24,background:"#fff",height:"calc(100% - 38px)",padding:8,overflow:"hidden"}}>
+<div style={{display:"flex",alignItems:"center",gap:4,marginBottom:6,padding:"2px 0"}}>
+<span style={{fontSize:10,fontWeight:800,color:"var(--purple)"}}>ОТП NEXT</span>
+<span style={{fontSize:7,color:"var(--text3)",marginLeft:"auto"}}>💊 Лекарства</span></div>
+{["Амоксициллин 500мг","Омепразол 20мг","Метформин 1000мг","Ибупрофен 400мг"].map((t,i)=>(<div key={i} style={{padding:"6px 0",borderBottom:"1px solid #f5f5f7"}}>
+<div style={{fontSize:8,fontWeight:700,marginBottom:2}}>💊 {t}</div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+<span style={{fontSize:10,fontWeight:900}}>{(2800+i*1700).toLocaleString("ru-RU")} ₽</span>
+<span style={{background:"var(--lime)",borderRadius:5,padding:"2px 7px",fontSize:7,fontWeight:700}}>Заказ</span></div></div>))}
+</div></div>
+{/* Phone 2 — back, Мед. изделия */}
+<div style={{width:200,height:420,borderRadius:36,background:"#1a1a1e",border:"2px solid #3a3a40",boxShadow:"0 30px 60px rgba(0,0,0,.4)",overflow:"hidden",position:"relative",zIndex:1,transform:"translateX(-20px) translateY(-30px)"}}>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 16px 4px",color:"#fff",fontSize:9,fontWeight:600}}>
+<span>12:30</span><div style={{width:70,height:20,borderRadius:12,background:"#000",border:"1px solid #333"}}/><div style={{display:"flex",gap:3}}><span style={{fontSize:8}}>●</span><span style={{fontSize:8}}>●</span><span style={{fontSize:8}}>●</span></div></div>
+<div style={{margin:"0 6px 6px",borderRadius:24,background:"#fff",height:"calc(100% - 38px)",padding:8,overflow:"hidden"}}>
+<div style={{display:"flex",alignItems:"center",gap:4,marginBottom:6,padding:"2px 0"}}>
+<span style={{fontSize:10,fontWeight:800,color:"var(--purple)"}}>ОТП NEXT</span>
+<span style={{fontSize:7,color:"var(--text3)",marginLeft:"auto"}}>🩺 Мед. изделия</span></div>
+{["Тонометр AND UA-888","Глюкометр OneTouch","Пульсоксиметр MD300","Небулайзер Omron"].map((t,i)=>(<div key={i} style={{padding:"6px 0",borderBottom:"1px solid #f5f5f7"}}>
+<div style={{fontSize:8,fontWeight:700,marginBottom:2}}>🩺 {t}</div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+<span style={{fontSize:10,fontWeight:900}}>{(45000+i*82000).toLocaleString("ru-RU")} ₽</span>
+<span style={{background:"var(--lime)",borderRadius:5,padding:"2px 7px",fontSize:7,fontWeight:700}}>Заказ</span></div></div>))}
+</div></div>
+</div>
+<div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:300,height:300,background:"radial-gradient(circle,rgba(200,230,14,.12),transparent 70%)",pointerEvents:"none",zIndex:-1}}/>
+</div></div></section>
+
+{/* OFFERS — no buttons, bigger icons, smaller blocks */}
+<section style={{background:"#fff",padding:"48px 28px"}}>
+<div style={{maxWidth:1000,margin:"0 auto"}}>
+<h2 style={{fontSize:26,fontWeight:900,textAlign:"center",marginBottom:28}}>Предложения для вас</h2>
+<div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12}}>
+{[
+{icon:"👥",title:"До 2 500 ₽ за рекомендацию",desc:"Пригласите контрагента на платформу",bg:"rgba(255,107,0,.04)",bc:"rgba(255,107,0,.12)"},
+{icon:"💳",title:"Кешбэк до 10% по ОТП Карте",desc:"Оплачивайте закупки корпоративной картой",bg:"rgba(200,230,14,.04)",bc:"rgba(200,230,14,.15)"},
+{icon:"💰",title:"Вклад «Без границ»",desc:"Выгодные условия с пополнением и снятием",bg:"rgba(150,73,189,.04)",bc:"rgba(150,73,189,.1)"}
+].map(o=>(<div key={o.title} style={{background:o.bg,borderRadius:18,padding:"24px 20px",border:`1px solid ${o.bc}`,transition:"all .3s",textAlign:"center"}}
+onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow="0 8px 24px rgba(0,0,0,.05)"}}
+onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none"}}>
+<div style={{fontSize:48,marginBottom:12}}>{o.icon}</div>
+<h3 style={{fontSize:15,fontWeight:800,marginBottom:6}}>{o.title}</h3>
+<p style={{fontSize:12,color:"var(--text2)",lineHeight:1.5}}>{o.desc}</p></div>))}</div></div></section>
+
+{/* FOOTER */}
+<footer className="dark-sec" style={{padding:"28px 28px"}}>
+<div style={{position:"absolute",top:0,left:"10%",right:"10%",height:2,background:"linear-gradient(90deg,transparent,rgba(255,165,0,.4),transparent)",zIndex:1}}/>
+<div style={{maxWidth:1000,margin:"0 auto",textAlign:"center",position:"relative",zIndex:1}}>
+<div style={{fontSize:20,fontWeight:900,color:"var(--lime)",marginBottom:12,letterSpacing:-.5}}>ОТП NEXT</div>
+<p style={{color:"rgba(255,255,255,.5)",fontSize:14,fontWeight:600,marginBottom:6}}>Прототип витрины маркетплейса</p>
+<p style={{color:"rgba(255,255,255,.4)",fontSize:13}}>© 2026 ОТП Банк. Все данные демонстрационные.</p></div></footer>
+
+<Modal open={modal} onClose={()=>setModal(false)}/>
+<MobModal open={mobModal} onClose={()=>setMobModal(false)}/>
+</div>);}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
