@@ -76,6 +76,9 @@ body{background:var(--bg);color:var(--text);font-family:'Manrope',-apple-system,
 }
 @keyframes heroTextUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes heroSweep{0%,100%{transform:translateX(-60%)}50%{transform:translateX(60%)}}
+@keyframes scrollBounce{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(8px);opacity:.9}}
+@keyframes statCount{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes glowPulse{0%,100%{opacity:.4}50%{opacity:.8}}
 @keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .ben-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(200,230,14,.06),transparent 60%),radial-gradient(ellipse at 80% 70%,rgba(150,73,189,.05),transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(255,107,0,.03),transparent 55%);pointer-events:none;border-radius:16px}
 .ben-card::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.008) 0 1px,transparent 1px 60px),repeating-linear-gradient(0deg,rgba(255,255,255,.005) 0 1px,transparent 1px 60px);pointer-events:none;border-radius:16px}
@@ -150,24 +153,24 @@ return(<svg viewBox="0 0 180 32" width={w} height={w*32/180} xmlns="http://www.w
 <text x="34" y="23" fontFamily="'Manrope',sans-serif" fontWeight="900" fontSize="19" fill={c} letterSpacing="-0.5">ОТПБАНК</text>
 </svg>);}
 
-/* Hero animation — clockwise rotating border, 30% bigger */
+/* Hero badge — compact rotating border */
 function HeroViz({onReady}){
 const[show,setShow]=useState(false);
 useEffect(()=>{const t=setTimeout(()=>setShow(true),400);return()=>clearTimeout(t)},[]);
 useEffect(()=>{if(show&&onReady){const t=setTimeout(onReady,900);return()=>clearTimeout(t)}},[show]);
 return(
-<div style={{display:"flex",justifyContent:"center",marginBottom:28}}>
-<div style={{position:"relative",width:260,height:156,borderRadius:20,opacity:show?1:0,transform:show?"scale(1)":"scale(.85)",transition:"all .8s cubic-bezier(.16,1,.3,1)"}}>
+<div style={{display:"inline-block",marginBottom:28}}>
+<div style={{position:"relative",width:180,height:88,borderRadius:16,opacity:show?1:0,transform:show?"scale(1)":"scale(.85)",transition:"all .8s cubic-bezier(.16,1,.3,1)"}}>
 {/* Rotating conic gradient border */}
-<div style={{position:"absolute",inset:-2,borderRadius:22,overflow:"hidden"}}>
+<div style={{position:"absolute",inset:-2,borderRadius:18,overflow:"hidden"}}>
 <div style={{position:"absolute",top:"50%",left:"50%",width:"150%",height:"150%",marginLeft:"-75%",marginTop:"-75%",animation:"rotateBorder 10.7s linear infinite"}}>
 <div style={{width:"100%",height:"100%",background:"conic-gradient(from 0deg,transparent 0%,rgba(200,230,14,.7) 8%,rgba(255,107,0,.5) 16%,transparent 24%,transparent 50%,rgba(150,73,189,.5) 58%,rgba(200,230,14,.4) 66%,transparent 74%)"}}/>
 </div>
 </div>
 {/* Inner content */}
-<div style={{position:"relative",zIndex:1,width:"100%",height:"100%",borderRadius:20,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"linear-gradient(135deg,rgba(22,22,24,.95),rgba(30,30,34,.92))",boxShadow:"inset 0 0 40px rgba(200,230,14,.05)"}}>
-<span style={{fontSize:31,fontWeight:900,color:"#fff",letterSpacing:-.5}}>ОТП NEXT</span>
-<span style={{fontSize:12,color:"rgba(255,255,255,.5)",fontWeight:600,marginTop:4,letterSpacing:1.3}}>МАРКЕТПЛЕЙС</span>
+<div style={{position:"relative",zIndex:1,width:"100%",height:"100%",borderRadius:16,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"linear-gradient(135deg,rgba(22,22,24,.97),rgba(30,30,34,.94))",boxShadow:"inset 0 0 30px rgba(200,230,14,.04)"}}>
+<span style={{fontSize:22,fontWeight:900,color:"#fff",letterSpacing:-.3}}>ОТП NEXT</span>
+<span style={{fontSize:9,color:"rgba(255,255,255,.45)",fontWeight:700,marginTop:3,letterSpacing:1.8,textTransform:"uppercase"}}>маркетплейс</span>
 </div></div></div>);}
 
 /* Chad mascot — plays once, waits 8s, replays */
@@ -309,31 +312,70 @@ useEffect(()=>setPage(1),[cat,q,sort]);
 
 return(<div style={{minHeight:"100vh",background:"var(--bg)"}}>
 
-{/* HERO — top of page */}
-<section className="dark-sec" style={{padding:"48px 28px 40px",textAlign:"center"}}>
-<div style={{position:"absolute",top:0,left:"5%",right:"5%",height:3,background:"linear-gradient(90deg,transparent,rgba(255,165,0,.5),rgba(255,107,0,.7),rgba(255,165,0,.5),transparent)",zIndex:1}}/>
+{/* HERO — fullscreen cinematic */}
+<section className="dark-sec" style={{minHeight:"100vh",display:"flex",flexDirection:"column",position:"relative"}}>
+{/* Amber LED strip */}
+<div style={{position:"absolute",top:0,left:"5%",right:"5%",height:3,background:"linear-gradient(90deg,transparent,rgba(255,165,0,.5),rgba(255,107,0,.7),rgba(255,165,0,.5),transparent)",zIndex:2}}/>
+{/* Extra ambient glow — large purple */}
+<div style={{position:"absolute",top:"10%",right:"-5%",width:"50%",height:"60%",background:"radial-gradient(ellipse at center,rgba(150,73,189,.08),transparent 65%)",pointerEvents:"none",zIndex:0}}/>
 {/* Sweeping ambient light */}
 <div style={{position:"absolute",top:"-30%",left:0,width:"40%",height:"160%",background:"radial-gradient(ellipse at center,rgba(255,255,255,.04),transparent 70%)",pointerEvents:"none",animation:"heroSweep 8s ease-in-out infinite",zIndex:0}}/>
+{/* Lime accent glow bottom-left */}
+<div style={{position:"absolute",bottom:"5%",left:"10%",width:"30%",height:"40%",background:"radial-gradient(ellipse at center,rgba(200,230,14,.04),transparent 65%)",pointerEvents:"none",zIndex:0}}/>
 
-<div style={{position:"relative",zIndex:1,maxWidth:860,margin:"0 auto"}}>
+{/* Main content — vertically centered */}
+<div style={{flex:1,display:"flex",alignItems:"center",maxWidth:1200,margin:"0 auto",width:"100%",padding:"80px 40px 0",position:"relative",zIndex:1}}>
+{/* Left — text block */}
+<div style={{flex:1,maxWidth:720}}>
 <HeroViz onReady={()=>setHeroReady(true)}/>
-<div style={{marginTop:0,opacity:heroReady?1:0,transform:heroReady?"translateY(0)":"translateY(24px)",transition:"all 1s cubic-bezier(.16,1,.3,1)"}}>
-<h1 style={{fontSize:"clamp(28px,5vw,48px)",fontWeight:900,color:"#fff",margin:0,lineHeight:1.1,letterSpacing:-1.5}}>
-<span style={{color:"var(--lime)",animation:heroReady?"pharmaFlicker 12s linear 1.2s infinite":"none"}}>Pharma</span> и медизделия<br/>
-<span style={{color:"var(--purple)"}}>от проверенных поставщиков</span></h1></div></div></section>
 
-{/* TAGS — centered */}
-<section style={{background:"#fff",padding:"16px 28px",borderBottom:"1px solid var(--border)"}}>
-<div style={{maxWidth:1320,margin:"0 auto",textAlign:"center"}}>
-<div style={{display:"inline-flex",gap:10,flexWrap:"wrap",justifyContent:"center"}}>
-{[{icon:"⚡",name:"Факторинг"},{icon:"🕐",name:"BNPL-рассрочка"},{icon:"📦",name:"Фулфилмент"},{icon:"✅",name:"МДЛП / Честный ЗНАК"}].map(p=>(<div key={p.name} style={{background:"#f9f9fb",borderRadius:12,padding:"10px 18px",display:"flex",alignItems:"center",gap:8,border:"1px solid #f0f0f5",transition:"all .2s",cursor:"pointer"}}
-onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--lime)"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#f0f0f5"}}>
-<span style={{fontSize:18}}>{p.icon}</span><span style={{fontSize:12,fontWeight:700}}>{p.name}</span></div>))}</div>
-<div style={{color:"var(--text3)",fontSize:13,fontWeight:600,marginTop:12}}>{AP.length.toLocaleString("ru-RU")} товаров · {SELLERS.length} поставщиков</div>
-</div></section>
+<div style={{opacity:heroReady?1:0,transform:heroReady?"translateY(0)":"translateY(20px)",transition:"all 1s cubic-bezier(.16,1,.3,1) .15s"}}>
+<h1 style={{fontSize:"clamp(36px,5.5vw,64px)",fontWeight:900,color:"#fff",margin:"0 0 20px",lineHeight:1.05,letterSpacing:-2}}>
+<span style={{color:"var(--lime)",animation:heroReady?"pharmaFlicker 12s linear 1.2s infinite":"none"}}>Pharma</span> и медизделия<br/>
+<span style={{color:"rgba(255,255,255,.6)",fontSize:"clamp(24px,3.5vw,42px)"}}>от проверенных поставщиков</span></h1>
+</div>
+
+<p style={{fontSize:17,color:"rgba(255,255,255,.5)",lineHeight:1.6,maxWidth:520,margin:"0 0 28px",fontWeight:500,opacity:heroReady?1:0,transform:heroReady?"translateY(0)":"translateY(16px)",transition:"all .8s cubic-bezier(.16,1,.3,1) .4s"}}>
+Факторинг, BNPL-рассрочка, фулфилмент и МДЛП-трекинг — встроены в каждую сделку</p>
+
+{/* Feature tags */}
+<div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:32,opacity:heroReady?1:0,transform:heroReady?"translateY(0)":"translateY(16px)",transition:"all .8s cubic-bezier(.16,1,.3,1) .55s"}}>
+{[{icon:"⚡",name:"Факторинг"},{icon:"🕐",name:"BNPL"},{icon:"📦",name:"Фулфилмент"},{icon:"✅",name:"МДЛП"}].map((p,i)=>(<div key={p.name} style={{background:"rgba(255,255,255,.05)",borderRadius:10,padding:"8px 14px",display:"flex",alignItems:"center",gap:6,border:"1px solid rgba(255,255,255,.08)",transition:"all .25s",cursor:"default"}}
+onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(200,230,14,.3)";e.currentTarget.style.background="rgba(200,230,14,.06)"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,.08)";e.currentTarget.style.background="rgba(255,255,255,.05)"}}>
+<span style={{fontSize:14}}>{p.icon}</span><span style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,.7)"}}>{p.name}</span></div>))}</div>
+
+{/* CTA button */}
+<div style={{opacity:heroReady?1:0,transform:heroReady?"translateY(0)":"translateY(16px)",transition:"all .8s cubic-bezier(.16,1,.3,1) .7s"}}>
+<button onClick={()=>{document.getElementById("catalog")?.scrollIntoView({behavior:"smooth"})}} style={{padding:"14px 32px",border:"none",borderRadius:14,background:"var(--lime)",color:"#000",fontSize:15,fontWeight:800,cursor:"pointer",transition:"all .25s",letterSpacing:-.2,boxShadow:"0 0 30px rgba(200,230,14,.15)"}}
+onMouseEnter={e=>{e.target.style.transform="translateY(-2px)";e.target.style.boxShadow="0 8px 40px rgba(200,230,14,.25)"}} onMouseLeave={e=>{e.target.style.transform="none";e.target.style.boxShadow="0 0 30px rgba(200,230,14,.15)"}}>
+Смотреть каталог →</button></div>
+</div>
+
+{/* Right — character placeholder / glow orb */}
+<div style={{flex:"0 0 360px",position:"relative",display:"flex",alignItems:"center",justifyContent:"center",minHeight:400}}>
+{/* Ambient glow behind character */}
+<div style={{position:"absolute",width:300,height:300,borderRadius:"50%",background:"radial-gradient(circle,rgba(200,230,14,.06) 0%,rgba(150,73,189,.04) 40%,transparent 70%)",animation:"glowPulse 4s ease-in-out infinite"}}/>
+{/* Video character will go here */}
+<ChadMascot/>
+</div>
+</div>
+
+{/* Bottom stats bar */}
+<div style={{padding:"24px 40px 20px",display:"flex",justifyContent:"center",gap:40,position:"relative",zIndex:1,borderTop:"1px solid rgba(255,255,255,.05)"}}>
+{[{n:AP.length.toLocaleString("ru-RU")+"+",l:"товаров"},{n:SELLERS.length,l:"поставщиков"},{n:"12",l:"категорий"},{n:"6/12/18",l:"мес. рассрочка"}].map((s,i)=>(<div key={i} style={{textAlign:"center",opacity:heroReady?1:0,transform:heroReady?"translateY(0)":"translateY(12px)",transition:`all .6s cubic-bezier(.16,1,.3,1) ${.8+i*.12}s`}}>
+<div style={{fontSize:22,fontWeight:900,color:"var(--lime)",letterSpacing:-.5}}>{s.n}</div>
+<div style={{fontSize:11,color:"rgba(255,255,255,.35)",fontWeight:600,marginTop:2}}>{s.l}</div></div>))}</div>
+
+{/* Scroll indicator */}
+<div style={{textAlign:"center",paddingBottom:20,position:"relative",zIndex:1}}>
+<div style={{display:"inline-flex",flexDirection:"column",alignItems:"center",gap:6,animation:"scrollBounce 2s ease-in-out infinite",cursor:"pointer"}} onClick={()=>{document.getElementById("catalog")?.scrollIntoView({behavior:"smooth"})}}>
+<span style={{fontSize:10,fontWeight:700,color:"rgba(255,255,255,.25)",letterSpacing:2,textTransform:"uppercase"}}>scroll</span>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6L8 11L13 6" stroke="rgba(255,255,255,.25)" strokeWidth="2" strokeLinecap="round"/></svg>
+</div></div>
+</section>
 
 {/* SEARCH/SORT — right-aligned above catalog */}
-<div style={{maxWidth:1320,margin:"0 auto",padding:"12px 28px 0",display:"flex",justifyContent:"flex-end",alignItems:"center",gap:10}}>
+<div id="catalog" style={{maxWidth:1320,margin:"0 auto",padding:"12px 28px 0",display:"flex",justifyContent:"flex-end",alignItems:"center",gap:10}}>
 <div style={{position:"relative",width:320}}>
 <input value={q} onChange={e=>setQ(e.target.value)} placeholder="Поиск по каталогу..." style={{width:"100%",boxSizing:"border-box",padding:"9px 14px 9px 36px",background:"#f5f5f7",border:"1px solid transparent",borderRadius:12,color:"var(--text)",fontSize:13,outline:"none",transition:"all .2s",fontFamily:"Manrope,sans-serif"}}
 onFocus={e=>{e.target.style.borderColor="var(--lime)";e.target.style.background="#fff"}} onBlur={e=>{e.target.style.borderColor="transparent";e.target.style.background="#f5f5f7"}}/>
