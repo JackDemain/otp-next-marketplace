@@ -1,0 +1,55 @@
+name: Remote Exec (Claude autonomous ops)
+
+# Универсальный workflow для автономного исполнения команд Claude на удалённом сервере.
+# Требует Secrets: DEPLOY_HOST, DEPLOY_SSH_KEY (обязательные), DEPLOY_USER (опц., дефолт root).
+# Триггерится ТОЛЬКО через workflow_dispatch API — не запускается сам на push.
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Bash command(s) to execute on server. Multi-line supported.'
+        required: true
+        type: string
+      destructive:
+        description: 'Destructive op? (rm, drop, down -v, prune, truncate, delete)'
+        required: true
+        type: boolean
+        default: false
+      confirmation:
+        description: 'For destructive=true — type EXEC-YES. Otherwise leave READ-ONLY.'
+        required: false
+        type: string
+        default: 'READ-ONLY'
+
+jobs:
+  remote-exec:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify destructive confirmation
+        run: |
+          if [ "${{ inputs.destructive }}" = "true" ] && [ "${{ inputs.confirmation }}" != "EXEC-YES" ]; then
+            echo "❌ Destructive op requires confirmation=EXEC-YES (got: '${{ inputs.confirmation }}')"
+            exit 1
+          fi
+          echo "✅ Confirmation ok. destructive=${{ inputs.destructive }}"
+
+      - name: Execute on server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER || 'root' }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          timeout: 600s
+          script: |
+            set -e
+            echo "=== BEGIN $(date -u -Iseconds) ==="
+            echo "--- COMMAND ---"
+            cat <<'CLAUDE_CMD_EOF'
+            ${{ inputs.command }}
+            CLAUDE_CMD_EOF
+            echo "--- OUTPUT ---"
+            bash <<'CLAUDE_CMD_EOF'
+            ${{ inputs.command }}
+            CLAUDE_CMD_EOF
+            echo "=== END $(date -u -Iseconds) ==="
