@@ -1,0 +1,45 @@
+# === Backend (Java / Maven / Spring Boot) ===
+backend/target/
+backend/.mvn/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+.classpath
+.project
+.settings/
+
+# === Node (если фронт локально) ===
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnpm-debug.log
+dist/
+build/
+
+# === IDE ===
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# === Env / Secrets ===
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+!.env.example
+
+# === Docker ===
+.docker/
+
+# === OS ===
+._*
